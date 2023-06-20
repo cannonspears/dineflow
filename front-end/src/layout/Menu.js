@@ -17,7 +17,7 @@ function Menu() {
           to="/"
         >
           <div className="sidebar-brand-text mx-3">
-            <span>Periodic Tables</span>
+            <span>DineFlow</span>
           </div>
         </Link>
         <hr className="sidebar-divider my-0" />
@@ -48,11 +48,7 @@ function Menu() {
           </li>
         </ul>
         <div className="text-center d-none d-md-inline">
-          <button
-            className="btn rounded-circle border-0"
-            id="sidebarToggle"
-            type="button"
-          />
+          <button className="btn rounded-circle border-0" id="sidebarToggle" type="button" />
         </div>
       </div>
     </nav>
