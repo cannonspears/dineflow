@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-
+import { createReservation } from "../utils/api";
 import ReservationForm from "./ReservationForm";
 
 function NewReservation() {
@@ -26,9 +26,9 @@ function NewReservation() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // createReservation(reservation).then(() => {
-    //   history.push("/");
-    // });
+    createReservation(reservation).then(() => {
+      history.push("/");
+    });
   };
 
   const handleCancel = () => {
