@@ -4,6 +4,8 @@ import { useHistory } from "react-router-dom";
 import ReservationForm from "./ReservationForm";
 
 function NewReservation() {
+  const history = useHistory();
+
   const initialFormData = {
     first_name: "",
     last_name: "",
@@ -13,18 +15,24 @@ function NewReservation() {
     people: "",
   };
 
-  const history = useHistory();
   const [formData, setFormData] = useState({ ...initialFormData });
 
-  const handleChange = (event) => {
+  const handleChange = ({ target: { name, value } }) => {
     setFormData({
       ...formData,
-      [event.target.name]: event.target.value,
+      [name]: value,
     });
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    // createReservation(reservation).then(() => {
+    //   history.push("/");
+    // });
+  };
+
+  const handleCancel = () => {
+    history.push("/");
   };
 
   return (
@@ -33,6 +41,7 @@ function NewReservation() {
       <ReservationForm
         handleChange={handleChange}
         handleSubmit={handleSubmit}
+        handleCancel={handleCancel}
         formData={formData}
         path={"/"}
       />
