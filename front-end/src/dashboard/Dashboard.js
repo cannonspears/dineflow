@@ -25,7 +25,6 @@ function Dashboard({ date }) {
 
   const tableRows = reservations.map((reservation) => (
     <tr key={reservation.reservation_id}>
-      {/* <th scope="row">{reservation.reservation_id}</th> */}
       <td scope="row">{reservation.first_name}</td>
       <td>{reservation.last_name}</td>
       <td>{reservation.mobile_number}</td>
@@ -54,7 +53,6 @@ function Dashboard({ date }) {
         </table>
       </div>
       <ErrorAlert error={reservationsError} />
-      {JSON.stringify(reservations)}
     </main>
   );
 }
