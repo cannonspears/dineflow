@@ -8,12 +8,12 @@ function NewReservation() {
   const history = useHistory();
 
   const initialFormData = {
-    first_name: "",
-    last_name: "",
-    mobile_number: "",
-    reservation_date: "",
-    reservation_time: "",
-    people: "",
+    first_name: "Test",
+    last_name: "Test",
+    mobile_number: "111-111-1111",
+    reservation_date: "2020-12-31",
+    reservation_time: "20:00:00",
+    people: 1,
   };
 
   const [formData, setFormData] = useState({ ...initialFormData });
