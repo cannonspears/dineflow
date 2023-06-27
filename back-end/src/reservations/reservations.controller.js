@@ -44,12 +44,12 @@ function nextId() {
 }
 
 async function create(req, res) {
-  const newReservation = req.body.data;
+  // const newReservation = req.body.data;
 
-  const now = new Date().toISOString();
-  newReservation.reservation_id = nextId();
-  newReservation.created_at = now;
-  newReservation.updated_at = now;
+  // const now = new Date().toISOString();
+  // newReservation.reservation_id = nextId();
+  // newReservation.created_at = now;
+  // newReservation.updated_at = now;
 
   res.status(201).json({
     data: await service.create(req.body.data),

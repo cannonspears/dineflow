@@ -5,10 +5,7 @@ function list() {
 }
 
 function create(reservation) {
-  return knex("reservations")
-    .insert(reservation)
-    .returning("*")
-    .then((createdRecords) => createdRecords[0]);
+  return knex("reservations").insert(reservation).returning("*");
 }
 
 module.exports = {
