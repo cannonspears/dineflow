@@ -65,21 +65,13 @@ export async function listReservations(params, signal) {
     .then(formatReservationTime);
 }
 
-const reservation = [];
-
-function nextId() {
-  const uint32 = window.crypto.getRandomValues(new Uint32Array(1))[0];
-  return uint32.toString(16);
-}
-
 export async function createReservation(reservation, signal) {
-  const now = new Date().toISOString();
-  const newReservation = {
-    ...reservation,
-    reservation_id: nextId(),
-    created_at: now,
-    updated_at: now,
+  const url = `${API_BASE_URL}/reservations/new`;
+  const options = {
+    method: "POST",
+    headers,
+    body: JSON.stringify({ data: reservation }),
+    signal,
   };
-  reservation.push(newReservation);
-  return newReservation;
+  return await fetchJson(url, options);
 }

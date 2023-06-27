@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { createReservation } from "../utils/api";
 import ReservationForm from "./ReservationForm";
+import ErrorAlert from "../layout/ErrorAlert";
 
 function NewReservation() {
   const history = useHistory();
@@ -16,6 +17,7 @@ function NewReservation() {
   };
 
   const [formData, setFormData] = useState({ ...initialFormData });
+  const [error, setError] = useState(null);
 
   const handleChange = ({ target: { name, value } }) => {
     setFormData({
@@ -26,9 +28,11 @@ function NewReservation() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    createReservation(reservation).then(() => {
-      history.push("/");
-    });
+    createReservation(formData)
+      .then(() => {
+        history.push("/");
+      })
+      .catch(setError);
   };
 
   const handleCancel = () => {
@@ -38,6 +42,7 @@ function NewReservation() {
   return (
     <main>
       <h1>New Reservation</h1>
+      <ErrorAlert error={error} />
       <ReservationForm
         handleChange={handleChange}
         handleSubmit={handleSubmit}
