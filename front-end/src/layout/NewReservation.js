@@ -3,17 +3,18 @@ import { useHistory } from "react-router-dom";
 import { createReservation } from "../utils/api";
 import ReservationForm from "./ReservationForm";
 import ErrorAlert from "../layout/ErrorAlert";
+import { formatAsDate } from "../utils/date-time";
 
 function NewReservation() {
   const history = useHistory();
 
   const initialFormData = {
-    first_name: "Test",
-    last_name: "Test",
-    mobile_number: "111-111-1111",
-    reservation_date: "2020-12-31",
-    reservation_time: "20:00:00",
-    people: 1,
+    first_name: "",
+    last_name: "",
+    mobile_number: "",
+    reservation_date: "",
+    reservation_time: "",
+    people: "",
   };
 
   const [formData, setFormData] = useState({ ...initialFormData });
@@ -30,7 +31,7 @@ function NewReservation() {
     event.preventDefault();
     createReservation(formData)
       .then(() => {
-        history.push("/");
+        history.push(`/dashboard?date=${formatAsDate(formData.reservation_date)}`);
       })
       .catch(setError);
   };
