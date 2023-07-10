@@ -35,7 +35,12 @@ function hasOnlyValidProperties(req, res, next) {
 }
 
 async function list(req, res) {
-  res.json({ data: await service.list() });
+  const { date } = req.query;
+  let data;
+  if (date) {
+    data = await service.listByDate(date);
+  }
+  res.json({ data });
 }
 
 async function create(req, res) {
@@ -45,6 +50,6 @@ async function create(req, res) {
 }
 
 module.exports = {
-  list,
+  list: asyncErrorBoundary(list),
   create: [hasOnlyValidProperties, hasRequiredProperties, asyncErrorBoundary(create)],
 };
