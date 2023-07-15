@@ -60,7 +60,6 @@ function validatePeopleProperty(req, res, next) {
 function validateDateProperty(req, res, next) {
   const { reservation_date } = req.body.data;
   const date = Date.parse(reservation_date);
-  const newDay = new Date();
   const dayOfTheWeek = new Date(date);
   if (dayOfTheWeek.getUTCDay() == 2) {
     return next({
