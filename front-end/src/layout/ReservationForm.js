@@ -75,7 +75,6 @@ function ReservationForm({ handleChange, handleSubmit, formData, path }) {
           <label htmlFor="reservation_time">Reservation Time</label>
           <input
             type="time"
-            step="1800"
             className="form-control"
             id="reservation_time"
             name="reservation_time"
