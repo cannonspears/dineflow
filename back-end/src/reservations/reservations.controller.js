@@ -20,7 +20,7 @@ const VALID_PROPERTIES = [
   "people",
 ];
 
-function hasOnlyValidProperties(req, res, next) {
+function validateHasOnlyCorrectProperties(req, res, next) {
   const { data = {} } = req.body;
 
   const invalidFields = Object.keys(data).filter((field) => !VALID_PROPERTIES.includes(field));
@@ -32,6 +32,29 @@ function hasOnlyValidProperties(req, res, next) {
     });
   }
   next();
+}
+
+function validateBodyHasData(req, res, next) {
+  const data = req.body.data;
+  if (!data) {
+    return next({
+      status: 400,
+      message: `Request body must have data.`,
+    });
+  }
+  next();
+}
+
+function validatePeopleProperty(req, res, next) {
+  const { data: { people } = {} } = req.body;
+  if (Number.isInteger(people) && people > 1) {
+    next();
+  } else {
+    return next({
+      status: 400,
+      message: `"People" must be a number and greater than 1.`,
+    });
+  }
 }
 
 async function list(req, res) {
@@ -51,5 +74,11 @@ async function create(req, res) {
 
 module.exports = {
   list: asyncErrorBoundary(list),
-  create: [hasOnlyValidProperties, hasRequiredProperties, asyncErrorBoundary(create)],
+  create: [
+    validateBodyHasData,
+    hasRequiredProperties,
+    validateHasOnlyCorrectProperties,
+    validatePeopleProperty,
+    asyncErrorBoundary(create),
+  ],
 };
