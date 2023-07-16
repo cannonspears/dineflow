@@ -47,13 +47,18 @@ function validateBodyHasData(req, res, next) {
 
 function validatePeopleProperty(req, res, next) {
   const { data: { people } = {} } = req.body;
-  if (Number.isInteger(people) && people > 1) {
-    next();
-  } else {
+  if (!+people) {
     return next({
       status: 400,
-      message: `"people" must be a number and greater than 1.`,
+      message: `"people" in party must be a number.`,
     });
+  } else if (+people < 1) {
+    return next({
+      status: 400,
+      message: `"people" in party must be at least 1.`,
+    });
+  } else {
+    next();
   }
 }
 
