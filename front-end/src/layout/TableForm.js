@@ -13,6 +13,7 @@ function TableForm({ handleChange, handleSubmit, formData, path }) {
             className="form-control"
             id="table_name"
             name="table_name"
+            min="2"
             onChange={handleChange}
             value={formData.table_name}
             required
@@ -25,6 +26,7 @@ function TableForm({ handleChange, handleSubmit, formData, path }) {
             className="form-control"
             id="capacity"
             name="capacity"
+            min="1"
             onChange={handleChange}
             value={formData.capacity}
             required
