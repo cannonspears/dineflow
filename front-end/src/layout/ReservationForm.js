@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { today } from "../utils/date-time";
 
 function ReservationForm({ handleChange, handleSubmit, formData, path }) {
   return (
@@ -39,13 +40,14 @@ function ReservationForm({ handleChange, handleSubmit, formData, path }) {
             id="mobile_number"
             name="mobile_number"
             pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+            placeholder="xxx-xxx-xxxx"
             onChange={handleChange}
             value={formData.mobile_number}
             required
           />
         </div>
         <div className="col-6 form-group">
-          <label htmlFor="people">Number in Party</label>
+          <label htmlFor="people">People in Party</label>
           <input
             type="number"
             className="form-control"
@@ -66,6 +68,7 @@ function ReservationForm({ handleChange, handleSubmit, formData, path }) {
             className="form-control"
             id="reservation_date"
             name="reservation_date"
+            min={today()}
             onChange={handleChange}
             value={formData.reservation_date}
             required

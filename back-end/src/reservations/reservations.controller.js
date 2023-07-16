@@ -2,7 +2,7 @@ const service = require("./reservations.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 const hasProperties = require("../errors/hasProperties");
 
-const hasRequiredProperties = hasProperties(
+const validateHasRequiredProperties = hasProperties(
   "first_name",
   "last_name",
   "mobile_number",
@@ -47,14 +47,50 @@ function validateBodyHasData(req, res, next) {
 
 function validatePeopleProperty(req, res, next) {
   const { data: { people } = {} } = req.body;
-  if (Number.isInteger(people) && people > 1) {
+  if (!+people) {
+    return next({
+      status: 400,
+      message: `"people" in party must be a number.`,
+    });
+  } else if (+people < 1) {
+    return next({
+      status: 400,
+      message: `"people" in party must be at least 1.`,
+    });
+  } else {
     next();
+  }
+}
+
+function validateDateProperty(req, res, next) {
+  const { reservation_date } = req.body.data;
+  const date = Date.parse(reservation_date);
+  const dayOfTheWeek = new Date(date);
+  if (dayOfTheWeek.getUTCDay() == 2) {
+    return next({
+      status: 400,
+      message: `"reservation_date" must not be Tuesday.`,
+    });
+  } else if (date && date > 0) {
+    return next();
   } else {
     return next({
       status: 400,
-      message: `"People" must be a number and greater than 1.`,
+      message: `"reservation_date" must be a date`,
     });
   }
+}
+
+function validateDateIsNotInThePast(req, res, next) {
+  const { reservation_date, reservation_time } = req.body.data;
+  let day = new Date(`${reservation_date} ${reservation_time}`);
+  if (day < new Date()) {
+    return next({
+      status: 400,
+      message: `"reservation_date" must not be in the past.`,
+    });
+  }
+  next();
 }
 
 async function list(req, res) {
@@ -76,9 +112,11 @@ module.exports = {
   list: asyncErrorBoundary(list),
   create: [
     validateBodyHasData,
-    hasRequiredProperties,
+    validateHasRequiredProperties,
     validateHasOnlyCorrectProperties,
     validatePeopleProperty,
+    validateDateProperty,
+    validateDateIsNotInThePast,
     asyncErrorBoundary(create),
   ],
 };
