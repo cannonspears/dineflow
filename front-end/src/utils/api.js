@@ -86,3 +86,8 @@ export async function createTable(table, signal) {
   };
   return await fetchJson(url, options);
 }
+
+export async function listTable(signal) {
+  const url = new URL(`${API_BASE_URL}/tables`);
+  return await fetchJson(url, { headers, signal }, []);
+}
