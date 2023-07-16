@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
+import { createTable } from "../utils/api";
 import TableForm from "./TableForm.js";
 import ErrorAlert from "../layout/ErrorAlert";
 
@@ -23,6 +24,11 @@ function NewTable() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    createTable(formData)
+      .then(() => {
+        history.push(`/dashboard`);
+      })
+      .catch(setError);
   };
 
   const handleCancel = () => {
