@@ -30,8 +30,9 @@ function validateHasOnlyCorrectProperties(req, res, next) {
       status: 400,
       message: `Invalid field(s): ${invalidFields.join(", ")}`,
     });
+  } else {
+    next();
   }
-  next();
 }
 
 function validateBodyHasData(req, res, next) {
@@ -41,8 +42,9 @@ function validateBodyHasData(req, res, next) {
       status: 400,
       message: `Request body must have data.`,
     });
+  } else {
+    next();
   }
-  next();
 }
 
 function validatePeopleProperty(req, res, next) {
@@ -87,10 +89,23 @@ function validateDateIsNotInThePast(req, res, next) {
   if (day < new Date()) {
     return next({
       status: 400,
-      message: `"reservation_date" must not be in the past.`,
+      message: `"reservation_date" and "reservation_time" must not be in the past.`,
     });
+  } else {
+    next();
   }
-  next();
+}
+
+function validateTimeProperty(req, res, next) {
+  const { reservation_time } = req.body.data;
+  if (reservation_time < "10:30" || reservation_time > "21:30") {
+    return next({
+      status: 400,
+      message: `"reservation_time" must be between 10:30 AM and 9:30 PM`,
+    });
+  } else {
+    next();
+  }
 }
 
 async function list(req, res) {
@@ -117,6 +132,7 @@ module.exports = {
     validatePeopleProperty,
     validateDateProperty,
     validateDateIsNotInThePast,
+    validateTimeProperty,
     asyncErrorBoundary(create),
   ],
 };
