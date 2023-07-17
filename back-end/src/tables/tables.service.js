@@ -8,7 +8,15 @@ function create(table) {
   return knex("tables").insert(table).returning("*");
 }
 
+function update(updatedTable) {
+  return knex("tables")
+    .select("*")
+    .where({ table_id: updatedTable.table_id })
+    .update(updatedTable, "*");
+}
+
 module.exports = {
   list,
   create,
+  update,
 };
