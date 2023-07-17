@@ -135,6 +135,15 @@ async function update(req, res) {
   const data = await service.update(updatedTable);
   res.status(200).json({ data });
 }
+async function destroy(req, res, next) {
+  const updatedTable = {
+    ...res.locals.table,
+    reservation_id: null,
+  };
+
+  const data = await service.update(updatedTable);
+  res.json({ data });
+}
 
 module.exports = {
   list: asyncErrorBoundary(list),
@@ -154,4 +163,5 @@ module.exports = {
     validateTableIsAvailable,
     asyncErrorBoundary(update),
   ],
+  delete: [asyncErrorBoundary(destroy)],
 };

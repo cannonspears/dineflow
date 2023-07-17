@@ -1,11 +1,23 @@
 import React from "react";
 
-function TableList({ tables }) {
+function TableList({ tables, handleFinishReservation }) {
   const tablesRows = tables.map((table) => (
     <tr key={table.table_id}>
       <td scope="row">{table.table_name}</td>
       <td>{table.capacity}</td>
       <td data-table-id-status={table.table_id}>{table.reservation_id ? "Occupied" : "Free"}</td>
+      {table.reservation_id !== null ? (
+        <td>
+          <button
+            typ="button"
+            className="btn btn-outline-secondary btn-sm"
+            data-table-id-finish={table.table_id}
+            onClick={() => handleFinishReservation(table.table_id, table.reservation_id)}
+          >
+            Finish
+          </button>
+        </td>
+      ) : null}
     </tr>
   ));
   return (
@@ -20,6 +32,7 @@ function TableList({ tables }) {
               <th scope="col">Table Name</th>
               <th scope="col">Capacity</th>
               <th scope="col">Status</th>
+              <th scope="col">Options</th>
             </tr>
           </thead>
           <tbody className="table-group-divider">{tablesRows}</tbody>
