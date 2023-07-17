@@ -1,4 +1,5 @@
 const service = require("./tables.service");
+const reservationsService = require("../reservations/reservations.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 
 const hasProperties = require("../errors/hasProperties");
@@ -73,6 +74,48 @@ async function validateTableExists(req, res, next) {
   });
 }
 
+async function validateReservationExists(req, res, next) {
+  const { reservation_id } = req.body.data;
+  if (!reservation_id) {
+    next({
+      status: 400,
+      message: `reservation_id is missing.`,
+    });
+  }
+  const reservation = await reservationsService.read(reservation_id);
+  if (reservation) {
+    res.locals.reservation = reservation;
+    return next();
+  }
+  next({
+    status: 404,
+    message: `reservation_id ${reservation_id} cannot be found.`,
+  });
+}
+
+function validateSeatedCapacity(req, res, next) {
+  const capacity = res.locals.table.capacity;
+  if (capacity < res.locals.reservation.people) {
+    next({
+      status: 400,
+      message: `That table does not have sufficient capacity.`,
+    });
+  } else {
+    next();
+  }
+}
+
+function validateTableIsAvailable(req, res, next) {
+  const reservation = res.locals.table.reservation_id;
+  if (reservation !== null) {
+    next({
+      status: 400,
+      message: `Table ${res.locals.table.table_name} is occupied.`,
+    });
+  }
+  next();
+}
+
 async function list(req, res, next) {
   const data = await service.list();
   res.status(200).json({ data });
@@ -103,5 +146,12 @@ module.exports = {
     validateTableNameProperty,
     asyncErrorBoundary(create),
   ],
-  update: [asyncErrorBoundary(validateTableExists), asyncErrorBoundary(update)],
+  update: [
+    asyncErrorBoundary(validateTableExists),
+    validateBodyHasData,
+    validateReservationExists,
+    validateSeatedCapacity,
+    validateTableIsAvailable,
+    asyncErrorBoundary(update),
+  ],
 };

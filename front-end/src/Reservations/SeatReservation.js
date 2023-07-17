@@ -63,14 +63,10 @@ function SeatReservation() {
         {tableOptions}
       </select>
       <div>
-        <button
-          type="button"
-          className="btn btn-outline-secondary btn-sm mr-2"
-          onClick={history.goBack}
-        >
+        <button type="button" className="btn btn-secondary mr-2" onClick={history.goBack}>
           Cancel
         </button>
-        <button type="submit" className="btn btn-outline-primary btn-sm" onClick={handleSubmit}>
+        <button type="submit" className="btn btn-primary" onClick={handleSubmit}>
           Submit
         </button>
       </div>
