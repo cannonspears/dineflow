@@ -8,6 +8,10 @@ function create(table) {
   return knex("tables").insert(table).returning("*");
 }
 
+function read(table_id) {
+  return knex("tables").select("*").where({ table_id }).first();
+}
+
 function update(updatedTable) {
   return knex("tables")
     .select("*")
@@ -18,5 +22,6 @@ function update(updatedTable) {
 module.exports = {
   list,
   create,
+  read,
   update,
 };

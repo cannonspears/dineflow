@@ -61,6 +61,18 @@ function validateTableNameProperty(req, res, next) {
   }
 }
 
+async function validateTableExists(req, res, next) {
+  const table = await service.read(req.params.table_id);
+  if (table) {
+    res.locals.table = table;
+    return next();
+  }
+  next({
+    status: 404,
+    message: `table ${req.params.table_id} cannot be found.`,
+  });
+}
+
 async function list(req, res, next) {
   const data = await service.list();
   res.status(200).json({ data });
@@ -70,7 +82,6 @@ async function create(req, res, next) {
   const data = await service.create(req.body.data);
   res.status(201).json({ data });
 }
-s;
 
 async function update(req, res) {
   const updatedTable = {
@@ -92,5 +103,5 @@ module.exports = {
     validateTableNameProperty,
     asyncErrorBoundary(create),
   ],
-  update: asyncErrorBoundary(update),
+  update: [asyncErrorBoundary(validateTableExists), asyncErrorBoundary(update)],
 };
