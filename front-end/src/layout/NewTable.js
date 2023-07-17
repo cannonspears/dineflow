@@ -26,7 +26,7 @@ function NewTable() {
     event.preventDefault();
     createTable(formData)
       .then(() => {
-        history.push(`/dashboard`);
+        history.push(`/`);
       })
       .catch(setError);
   };
