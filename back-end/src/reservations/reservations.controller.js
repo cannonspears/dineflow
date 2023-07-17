@@ -49,12 +49,12 @@ function validateBodyHasData(req, res, next) {
 
 function validatePeopleProperty(req, res, next) {
   const { data: { people } = {} } = req.body;
-  if (!+people) {
+  if (!Number.isInteger(people)) {
     return next({
       status: 400,
       message: `"people" in party must be a number.`,
     });
-  } else if (+people < 1) {
+  } else if (people < 1) {
     return next({
       status: 400,
       message: `"people" in party must be at least 1.`,

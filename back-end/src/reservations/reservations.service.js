@@ -5,7 +5,10 @@ function listByDate(date) {
 }
 
 function create(reservation) {
-  return knex("reservations").insert(reservation).returning("*");
+  return knex("reservations")
+    .insert(reservation)
+    .returning("*")
+    .then((createdReservation) => createdReservation[0]);
 }
 
 function read(reservation_id) {
