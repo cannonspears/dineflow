@@ -10,7 +10,6 @@ function validateHasOnlyCorrectProperties(req, res, next) {
   const { data = {} } = req.body;
 
   const invalidFields = Object.keys(data).filter((field) => !VALID_PROPERTIES.includes(field));
-
   if (invalidFields.length) {
     return next({
       status: 400,
@@ -57,6 +56,8 @@ function validateTableNameProperty(req, res, next) {
       status: 400,
       message: `"table_name" must have 2 or more characters.`,
     });
+  } else {
+    next();
   }
 }
 
