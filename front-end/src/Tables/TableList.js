@@ -1,6 +1,6 @@
 import React from "react";
 
-function TableList({}) {
+function TableList({ tables }) {
   const tablesRows = tables.map((table) => (
     <tr key={table.table_id}>
       <td scope="row">{table.table_name}</td>
@@ -16,15 +16,11 @@ function TableList({}) {
         <table className="table table-sm w-75 text-center mb-5">
           <thead>
             <tr>
-              <th scope="col">First Name</th>
-              <th scope="col">Last Name</th>
-              <th scope="col">Mobile Number</th>
-              <th scope="col">Reservation Date</th>
-              <th scope="col">Reservation Time</th>
-              <th scope="col">People</th>
+              <th scope="col">Table Name</th>
+              <th scope="col">Capacity</th>
             </tr>
           </thead>
-          <tbody className="table-group-divider">{reservationsRows}</tbody>
+          <tbody className="table-group-divider">{tablesRows}</tbody>
         </table>
       </div>
     </main>

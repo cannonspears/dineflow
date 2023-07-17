@@ -1,8 +1,10 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { today } from "../utils/date-time";
 
 function TableForm({ handleChange, handleSubmit, formData, path }) {
+  const history = useHistory();
+
   return (
     <form onSubmit={handleSubmit}>
       <div className="row mb-3">
@@ -34,10 +36,8 @@ function TableForm({ handleChange, handleSubmit, formData, path }) {
         </div>
       </div>
 
-      <button>
-        <Link to={path} type="button" className="btn btn-secondary" role="button">
-          Cancel
-        </Link>
+      <button type="button" className="btn btn-secondary mr-2" onClick={() => history.goBack()}>
+        Cancel
       </button>
       <button type="submit" className="btn btn-primary">
         Submit
