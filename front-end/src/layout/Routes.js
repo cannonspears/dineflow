@@ -4,8 +4,8 @@ import { Redirect, Route, Switch } from "react-router-dom";
 import Dashboard from "../dashboard/Dashboard";
 import NotFound from "./NotFound";
 import { today } from "../utils/date-time";
-import NewReservation from "./NewReservation";
-import NewTable from "./NewTable";
+import NewReservation from "../Reservations/NewReservation";
+import NewTable from "../Tables/NewTable";
 import useQuery from "../utils/useQuery";
 
 /**
