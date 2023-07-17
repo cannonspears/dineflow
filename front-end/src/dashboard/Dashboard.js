@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
+
+// Import Utility Functions
 import { next, previous, today } from "../utils/date-time";
-import { listReservations } from "../utils/api";
+import { listReservations, listTable } from "../utils/api";
+
+// Import Components
+import ReservationList from "../Reservations/ReservationList";
+import TableList from "../Tables/TableList";
 import ErrorAlert from "../layout/ErrorAlert";
 
 /**
@@ -13,6 +19,7 @@ import ErrorAlert from "../layout/ErrorAlert";
 function Dashboard({ date }) {
   const [reservations, setReservations] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
+  const [tables, setTables] = useState([]);
 
   const history = useHistory();
 
@@ -27,6 +34,13 @@ function Dashboard({ date }) {
     return () => abortController.abort();
   }
 
+  useEffect(loadTables, []);
+  function loadTables() {
+    const abortController = new AbortController();
+    listTable(abortController.signal).then(setTables);
+    return () => abortController.abort();
+  }
+
   function previousDay(date) {
     const previousDate = previous(date);
     history.push(`/dashboard?date=${previousDate}`);
@@ -36,17 +50,6 @@ function Dashboard({ date }) {
     const nextDate = next(date);
     history.push(`/dashboard?date=${nextDate}`);
   }
-
-  const tableRows = reservations.map((reservation) => (
-    <tr key={reservation.reservation_id}>
-      <td scope="row">{reservation.first_name}</td>
-      <td>{reservation.last_name}</td>
-      <td>{reservation.mobile_number}</td>
-      <td>{reservation.reservation_date}</td>
-      <td>{reservation.reservation_time}</td>
-      <td>{reservation.people}</td>
-    </tr>
-  ));
 
   return (
     <main>
@@ -79,22 +82,9 @@ function Dashboard({ date }) {
         </div>
       </div>
 
-      <div className="d-md-flex mb-3">
-        <table className="table">
-          <thead>
-            <tr>
-              <th scope="col">First Name</th>
-              <th scope="col">Last Name</th>
-              <th scope="col">Mobile Number</th>
-              <th scope="col">Reservation Date</th>
-              <th scope="col">Reservation Time</th>
-              <th scope="col">People</th>
-            </tr>
-          </thead>
-          <tbody>{tableRows}</tbody>
-        </table>
-      </div>
       <ErrorAlert error={reservationsError} />
+      <ReservationList reservations={reservations} loadDashboard={loadDashboard} />
+      <TableList tables={tables} />
     </main>
   );
 }
