@@ -1,12 +1,16 @@
 import React from "react";
-
 import { Redirect, Route, Switch } from "react-router-dom";
-import Dashboard from "../dashboard/Dashboard";
-import NotFound from "./NotFound";
+
+// Import Utility Functions
 import { today } from "../utils/date-time";
-import NewReservation from "../Reservations/NewReservation";
-import NewTable from "../Tables/NewTable";
 import useQuery from "../utils/useQuery";
+
+// Import Components
+import Dashboard from "../dashboard/Dashboard";
+import NewReservation from "../Reservations/NewReservation";
+import SeatReservation from "../Reservations/SeatReservation";
+import NewTable from "../Tables/NewTable";
+import NotFound from "./NotFound";
 
 /**
  * Defines all the routes for the application.
@@ -32,6 +36,9 @@ function Routes() {
       </Route>
       <Route path="/reservations/new">
         <NewReservation />
+      </Route>
+      <Route path="/reservations/:reservation_id/seat">
+        <SeatReservation />
       </Route>
       <Route path="/tables/new">
         <NewTable />
