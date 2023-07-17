@@ -1,6 +1,6 @@
 import React from "react";
 
-function ReservationList({ reservations }) {
+function ReservationList({ reservations, loadDashboard }) {
   const reservationsRows = reservations.map((reservation) => (
     <tr key={reservation.reservation_id}>
       <td scope="row">{reservation.first_name}</td>
