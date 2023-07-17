@@ -9,6 +9,14 @@ function ReservationList({ reservations, loadDashboard }) {
       <td>{reservation.reservation_date}</td>
       <td>{reservation.reservation_time}</td>
       <td>{reservation.people}</td>
+      <td>
+        <a
+          href={`/reservations/${reservation.reservation_id}/seat`}
+          className="btn btn-outline-primary btn-sm"
+        >
+          Seat
+        </a>
+      </td>
     </tr>
   ));
 
@@ -27,6 +35,7 @@ function ReservationList({ reservations, loadDashboard }) {
               <th scope="col">Reservation Date</th>
               <th scope="col">Reservation Time</th>
               <th scope="col">People</th>
+              <th scope="col">Options</th>
             </tr>
           </thead>
           <tbody className="table-group-divider">{reservationsRows}</tbody>

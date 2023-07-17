@@ -5,6 +5,7 @@ function TableList({ tables }) {
     <tr key={table.table_id}>
       <td scope="row">{table.table_name}</td>
       <td>{table.capacity}</td>
+      <td data-table-id-status={table.table_id}>{table.reservation_id ? "Occupied" : "Free"}</td>
     </tr>
   ));
   return (
@@ -18,6 +19,7 @@ function TableList({ tables }) {
             <tr>
               <th scope="col">Table Name</th>
               <th scope="col">Capacity</th>
+              <th scope="col">Status</th>
             </tr>
           </thead>
           <tbody className="table-group-divider">{tablesRows}</tbody>
