@@ -103,11 +103,21 @@ export async function seatReservationAtTable(reservation_id, table_id, signal) {
   return await fetchJson(url, options);
 }
 
-export async function finishReservation(table_id) {
+export async function finishReservation(table_id, signal) {
   const url = `${API_BASE_URL}/tables/${table_id}/seat`;
   const options = {
     method: "DELETE",
+    signal,
+  };
+  return await fetchJson(url, options);
+}
+
+export async function changeReservationStatus(reservation, status) {
+  const url = `${API_BASE_URL}/reservations/${reservation.reservation_id}/status`;
+  const options = {
+    method: "PUT",
+    body: JSON.stringify({ data: { status } }),
     headers,
   };
-  return await fetchJson(url, options, {});
+  return await fetchJson(url, options, reservation);
 }

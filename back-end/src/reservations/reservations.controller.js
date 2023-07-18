@@ -108,6 +108,58 @@ function validateTimeProperty(req, res, next) {
   }
 }
 
+async function validateReservationExists(req, res, next) {
+  const reservation = await service.read(req.params.reservation_id);
+  if (reservation) {
+    res.locals.reservation = reservation;
+    return next();
+  }
+  next({
+    status: 404,
+    message: `${req.params.reservation_id} cannot be found.`,
+  });
+}
+
+function validateReservationIsBooked(req, res, next) {
+  const { status } = req.body.data;
+  if (status) {
+    if (status === "seated" || status === "finished") {
+      return next({
+        status: 400,
+        message: "Cannot create seated or finished reservation.",
+      });
+    }
+    if (status === "booked") {
+      return next();
+    }
+  }
+  return next();
+}
+
+function validateStatusProperty(req, res, next) {
+  const { status } = req.body.data;
+  const validStatus = ["booked", "seated", "finished", "cancelled"];
+  if (!validStatus.includes(status)) {
+    return next({
+      status: 400,
+      message: `Status cannot be unknown`,
+    });
+  }
+  res.locals.status = status;
+  next();
+}
+
+function validateReservationIsFinished(req, res, next) {
+  const { reservation } = res.locals;
+  if (reservation.status === "finished") {
+    return next({
+      status: 400,
+      message: `Status is currently finished`,
+    });
+  }
+  next();
+}
+
 async function list(req, res) {
   const { date } = req.query;
   let data;
@@ -118,9 +170,19 @@ async function list(req, res) {
 }
 
 async function create(req, res) {
-  res.status(201).json({
-    data: await service.create(req.body.data),
-  });
+  res.status(201).json({ data: await service.create(req.body.data) });
+}
+
+async function read(req, res, next) {
+  res.status(200).json({ data: res.locals.reservation });
+}
+
+async function update(req, res, next) {
+  const updatedReservation = {
+    ...req.body.data,
+    reservation_id: res.locals.reservation.reservation_id,
+  };
+  res.json({ data: await service.updateStatus(updatedReservation) });
 }
 
 module.exports = {
@@ -133,6 +195,14 @@ module.exports = {
     validateDateProperty,
     validateDateIsNotInThePast,
     validateTimeProperty,
+    validateReservationIsBooked,
     asyncErrorBoundary(create),
+  ],
+  read: [asyncErrorBoundary(validateReservationExists), asyncErrorBoundary(read)],
+  update: [
+    asyncErrorBoundary(validateReservationExists),
+    validateStatusProperty,
+    validateReservationIsFinished,
+    asyncErrorBoundary(update),
   ],
 };
