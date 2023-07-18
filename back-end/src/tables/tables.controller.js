@@ -116,6 +116,18 @@ function validateTableIsAvailable(req, res, next) {
   next();
 }
 
+function validateFinishedOccupiedTable(req, res, next) {
+  const { table } = res.locals;
+
+  if (!table.reservation_id) {
+    return next({
+      status: 400,
+      message: "Table is not occupied.",
+    });
+  }
+  next();
+}
+
 async function list(req, res, next) {
   const data = await service.list();
   res.status(200).json({ data });
@@ -163,5 +175,9 @@ module.exports = {
     validateTableIsAvailable,
     asyncErrorBoundary(update),
   ],
-  delete: [asyncErrorBoundary(destroy)],
+  delete: [
+    asyncErrorBoundary(validateTableExists),
+    validateFinishedOccupiedTable,
+    asyncErrorBoundary(destroy),
+  ],
 };
