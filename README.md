@@ -1,4 +1,4 @@
-# Restaurant Reservation System: Periodic Tables
+# DineFlow: Restaurant Reservation System
 
 DineFlow is a full-stack restaurant reservation management application designed for restaurant owners and employees.
 Users can create, view, and edit reservations as well as manage table seating settings.
