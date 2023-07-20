@@ -6,7 +6,7 @@ const hasProperties = require("../errors/hasProperties");
 // Application Middleware/Validators
 const validateHasRequiredProperties = hasProperties("table_name", "capacity");
 
-const VALID_PROPERTIES = ["table_name", "capacity"];
+const VALID_PROPERTIES = ["table_name", "capacity", "reservation_id"];
 
 function validateHasOnlyCorrectProperties(req, res, next) {
   const { data = {} } = req.body;
@@ -206,7 +206,7 @@ module.exports = {
     asyncErrorBoundary(update),
   ],
   delete: [
-    asyncErrorBoundary(validateTableExists),
+    validateTableExists,
     validateOccupiedTable,
     asyncErrorBoundary(destroy),
   ],
