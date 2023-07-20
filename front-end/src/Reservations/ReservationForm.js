@@ -7,6 +7,25 @@ import { today } from "../utils/date-time";
 function ReservationForm({ handleChange, handleSubmit, formData }) {
   const history = useHistory();
 
+  // Automatically add hyphens in phone number
+  function handlePhoneNumberFormatting(event) {
+    const input = event.target;
+    const phoneNumber = input.value.replace(/\D/g, "");
+    if (phoneNumber.length > 0) {
+      let formattedPhoneNumber = "";
+      formattedPhoneNumber += phoneNumber.substr(0, 3);
+      if (phoneNumber.length > 3) {
+        formattedPhoneNumber += "-";
+      }
+      formattedPhoneNumber += phoneNumber.substr(3, 3);
+      if (phoneNumber.length > 6) {
+        formattedPhoneNumber += "-";
+      }
+      formattedPhoneNumber += phoneNumber.substr(6, 4);
+      input.value = formattedPhoneNumber;
+    }
+  }
+
   return (
     <form onSubmit={handleSubmit}>
       <div className="row mb-3">
@@ -46,6 +65,7 @@ function ReservationForm({ handleChange, handleSubmit, formData }) {
             pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
             placeholder="xxx-xxx-xxxx"
             onChange={handleChange}
+            onInput={handlePhoneNumberFormatting}
             value={formData.mobile_number}
             required
           />
@@ -92,7 +112,11 @@ function ReservationForm({ handleChange, handleSubmit, formData }) {
         </div>
       </div>
 
-      <button type="button" className="btn btn-secondary mr-2" onClick={() => history.goBack()}>
+      <button
+        type="button"
+        className="btn btn-secondary mr-2"
+        onClick={() => history.goBack()}
+      >
         Cancel
       </button>
       <button type="submit" className="btn btn-primary">

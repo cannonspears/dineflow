@@ -11,13 +11,15 @@ function ReservationList({ reservations, loadDashboard }) {
       <td>{reservation.reservation_date}</td>
       <td>{reservation.reservation_time}</td>
       <td>{reservation.people}</td>
-      <td data-reservation-id-status={reservation.reservation_id}>{reservation.status}</td>
+      <td data-reservation-id-status={reservation.reservation_id}>
+        {reservation.status}
+      </td>
       {reservation.status === "booked" ? (
         <Fragment>
           <td>
             <a
               href={`/reservations/${reservation.reservation_id}/seat`}
-              className="btn btn-outline-primary btn-sm"
+              className="btn btn-primary btn-sm ml-3"
             >
               Seat
             </a>
@@ -25,7 +27,7 @@ function ReservationList({ reservations, loadDashboard }) {
           <td>
             <a
               href={`/reservations/${reservation.reservation_id}/edit`}
-              className="btn btn-outline-secondary btn-sm"
+              className="btn btn-secondary btn-sm"
             >
               Edit
             </a>
@@ -57,7 +59,6 @@ function ReservationList({ reservations, loadDashboard }) {
               <th scope="col">Reservation Time</th>
               <th scope="col">People</th>
               <th scope="col">Status</th>
-              <th scope="col">Options</th>
             </tr>
           </thead>
           <tbody className="table-group-divider">{reservationsRows}</tbody>

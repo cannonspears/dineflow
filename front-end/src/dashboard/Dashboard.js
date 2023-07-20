@@ -77,31 +77,37 @@ function Dashboard({ date }) {
         <div className="btn-group me-2">
           <button
             type="button"
-            className="btn btn-outline-secondary btn m-1 mt-2 float-right"
+            className="btn btn-secondary m-1 mt-2"
             onClick={() => previousDay(date)}
           >
-            Previous Day
+            Previous
           </button>
           <button
             type="button"
-            className="btn btn-outline-secondary btn m-1 mt-2 float-right"
+            className="btn btn-primary m-1 mt-2"
             onClick={() => history.push(`/dashboard?date=${today()}`)}
           >
             Today
           </button>
           <button
             type="button"
-            className="btn btn-outline-secondary btn m-1 mt-2 float-right"
+            className="btn btn-secondary m-1 mt-2"
             onClick={() => nextDay(date)}
           >
-            Next Day
+            Next
           </button>
         </div>
       </div>
 
       <ErrorAlert error={reservationsError} />
-      <ReservationList reservations={reservations} loadDashboard={loadDashboard} />
-      <TableList tables={tables} handleFinishReservation={handleFinishReservation} />
+      <ReservationList
+        reservations={reservations}
+        loadDashboard={loadDashboard}
+      />
+      <TableList
+        tables={tables}
+        handleFinishReservation={handleFinishReservation}
+      />
     </main>
   );
 }
