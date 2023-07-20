@@ -1,4 +1,17 @@
 .side-bar {
-  background-color: #393a44;
+  background: linear-gradient(-45deg, #6157f0, #2950ce, #23a6d5, #04f1f1);
   min-width: 200px;
+  animation: gradient 5s ease infinite;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
