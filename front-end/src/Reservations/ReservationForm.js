@@ -74,7 +74,6 @@ function ReservationForm({ handleChange, handleSubmit, formData }) {
             className="form-control"
             id="people"
             name="people"
-            min="1"
             onChange={handleChange}
             value={formData.people}
             required

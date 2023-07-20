@@ -53,7 +53,7 @@ function validateBodyHasData(req, res, next) {
 
 function validatePeopleProperty(req, res, next) {
   const { people } = req.body.data;
-  if (Number.isInteger(people)) {
+  if (typeof people == "number") {
     next();
   } else {
     return next({
