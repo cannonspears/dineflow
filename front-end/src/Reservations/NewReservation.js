@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
+
+// Import Utility Functions
 import { createReservation } from "../utils/api";
+import { formatAsDate } from "../utils/date-time";
+
+// Import Components
 import ReservationForm from "./ReservationForm";
 import ErrorAlert from "../layout/ErrorAlert";
-import { formatAsDate } from "../utils/date-time";
 
 function NewReservation() {
   const history = useHistory();
@@ -17,21 +21,21 @@ function NewReservation() {
     people: "",
   };
 
-  const [formData, setFormData] = useState({ ...initialFormData });
+  const [reservationForm, setReservationForm] = useState({ ...initialFormData });
   const [error, setError] = useState(null);
 
   const handleChange = ({ target: { name, value } }) => {
-    setFormData({
-      ...formData,
+    setReservationForm({
+      ...reservationForm,
       [name]: value,
     });
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    createReservation(formData)
+    createReservation(reservationForm)
       .then(() => {
-        history.push(`/dashboard?date=${formatAsDate(formData.reservation_date)}`);
+        history.push(`/dashboard?date=${formatAsDate(reservationForm.reservation_date)}`);
       })
       .catch(setError);
   };
@@ -43,7 +47,7 @@ function NewReservation() {
       <ReservationForm
         handleChange={handleChange}
         handleSubmit={handleSubmit}
-        formData={formData}
+        formData={reservationForm}
       />
     </main>
   );

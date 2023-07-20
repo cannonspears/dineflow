@@ -1,9 +1,12 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
+
+// Import Utility Functions
 import { today } from "../utils/date-time";
 
 function ReservationForm({ handleChange, handleSubmit, formData }) {
   const history = useHistory();
+
   return (
     <form onSubmit={handleSubmit}>
       <div className="row mb-3">

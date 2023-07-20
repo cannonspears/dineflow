@@ -2,6 +2,7 @@ const service = require("./reservations.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 const hasProperties = require("../errors/hasProperties");
 
+// Application Middleware/Validators
 const validateHasRequiredProperties = hasProperties(
   "first_name",
   "last_name",
@@ -23,7 +24,9 @@ const VALID_PROPERTIES = [
 function validateHasOnlyCorrectProperties(req, res, next) {
   const { data = {} } = req.body;
 
-  const invalidFields = Object.keys(data).filter((field) => !VALID_PROPERTIES.includes(field));
+  const invalidFields = Object.keys(data).filter(
+    (field) => !VALID_PROPERTIES.includes(field)
+  );
 
   if (invalidFields.length) {
     return next({
@@ -65,7 +68,7 @@ function validatePeopleProperty(req, res, next) {
 }
 
 function validateDateProperty(req, res, next) {
-  const { reservation_date } = req.body.data;
+  const { reservation_date = {} } = req.body.data;
   const date = Date.parse(reservation_date);
   const dayOfTheWeek = new Date(date);
   if (dayOfTheWeek.getUTCDay() == 2) {
@@ -78,7 +81,7 @@ function validateDateProperty(req, res, next) {
   } else {
     return next({
       status: 400,
-      message: `"reservation_date" must be a date`,
+      message: `"reservation_date" must be a date.`,
     });
   }
 }
@@ -97,11 +100,11 @@ function validateDateIsNotInThePast(req, res, next) {
 }
 
 function validateTimeProperty(req, res, next) {
-  const { reservation_time } = req.body.data;
+  const { reservation_time = {} } = req.body.data;
   if (reservation_time < "10:30" || reservation_time > "21:30") {
     return next({
       status: 400,
-      message: `"reservation_time" must be between 10:30 AM and 9:30 PM`,
+      message: `"reservation_time" must be between 10:30 AM and 9:30 PM.`,
     });
   } else {
     next();
@@ -121,36 +124,36 @@ async function validateReservationExists(req, res, next) {
 }
 
 function validateStatusProperty(req, res, next) {
-  const { status } = req.body.data;
   const validStatus = ["booked", "seated", "finished", "cancelled"];
+  const status = req.body.data?.status;
+
   if (!validStatus.includes(status)) {
     return next({
       status: 400,
-      message: `Status cannot be unknown`,
+      message: "Status must be valid.",
     });
   }
+
   res.locals.status = status;
   next();
 }
 
 function validateReservationIsBooked(req, res, next) {
-  const { status } = req.body.data;
-  if (status) {
-    if (status == "seated" || status == "finished") {
-      return next({
-        status: 400,
-        message: "Cannot create seated or finished reservation.",
-      });
-    }
-    if (status == "booked") {
-      return next();
-    }
+  const { status = {} } = req.body.data;
+  if (status === "seated" || status === "finished") {
+    return next({
+      status: 400,
+      message: "Cannot create seated or finished reservation.",
+    });
+  } else if (status === "booked") {
+    return next();
+  } else {
+    return next();
   }
-  return next();
 }
 
 function validateReservationIsFinished(req, res, next) {
-  const { reservation } = res.locals;
+  const { reservation = {} } = res.locals;
   if (reservation.status === "finished") {
     return next({
       status: 400,
@@ -160,9 +163,10 @@ function validateReservationIsFinished(req, res, next) {
   next();
 }
 
+// RESTful API Functions
 async function list(req, res) {
-  const { date } = req.query;
-  const { mobile_number } = req.query;
+  const { date = {} } = req.query;
+  const { mobile_number = {} } = req.query;
   let data;
   if (date) {
     data = await service.listByDate(date);
@@ -202,7 +206,10 @@ module.exports = {
     validateReservationIsBooked,
     asyncErrorBoundary(create),
   ],
-  read: [asyncErrorBoundary(validateReservationExists), asyncErrorBoundary(read)],
+  read: [
+    asyncErrorBoundary(validateReservationExists),
+    asyncErrorBoundary(read),
+  ],
   update: [
     asyncErrorBoundary(validateReservationExists),
     validateStatusProperty,
