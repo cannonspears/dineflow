@@ -46,7 +46,7 @@ Users can create, view, and edit reservations as well as manage table seating se
 
 ### Finish a reservation:
 
-![Finish Table](./screenshots/Find%Table.png "Finish Table")
+![Finish Table](./screenshots/Finish%Table.png "Finish Table")
 
 ## Backend Overview:
 
