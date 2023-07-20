@@ -19,6 +19,7 @@ function NewTable() {
   const [tableForm, setTableForm] = useState({ ...initialFormData });
   const [error, setError] = useState(null);
 
+  // Change handler function
   const handleChange = ({ target: { name, value } }) => {
     setTableForm({
       ...tableForm,
@@ -26,6 +27,7 @@ function NewTable() {
     });
   };
 
+  // Submit handler function
   const handleSubmit = (event) => {
     event.preventDefault();
     createTable(tableForm)
@@ -35,10 +37,6 @@ function NewTable() {
       .catch(setError);
   };
 
-  const handleCancel = () => {
-    history.push("/");
-  };
-
   return (
     <main>
       <h1>New Table</h1>
@@ -46,7 +44,6 @@ function NewTable() {
       <TableForm
         handleChange={handleChange}
         handleSubmit={handleSubmit}
-        handleCancel={handleCancel}
         formData={tableForm}
         path={"/"}
       />

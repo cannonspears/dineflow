@@ -1,5 +1,6 @@
 import React, { Fragment } from "react";
 
+// Import Components
 import CancelReservation from "./CancelReservation";
 
 function ReservationList({ reservations, loadDashboard }) {

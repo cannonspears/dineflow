@@ -7,7 +7,7 @@ import { today } from "../utils/date-time";
 function ReservationForm({ handleChange, handleSubmit, formData }) {
   const history = useHistory();
 
-  // Automatically add hyphens in phone number
+  // Adds phone number hyphens automatically
   function handlePhoneNumberFormatting(event) {
     const input = event.target;
     const phoneNumber = input.value.replace(/\D/g, "");

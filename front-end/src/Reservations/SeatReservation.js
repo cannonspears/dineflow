@@ -3,6 +3,8 @@ import { useParams, useHistory } from "react-router-dom";
 
 // Import Utility Functions
 import { listTable, seatReservationAtTable } from "../utils/api";
+
+// Import Components
 import ErrorAlert from "../layout/ErrorAlert";
 
 function SeatReservation() {
@@ -24,10 +26,12 @@ function SeatReservation() {
     return () => abortController.abort();
   }, [reservation_id]);
 
+  // Change handler function
   const handleChange = ({ target }) => {
     setTableId(target.value);
   };
 
+  // Submit handler function
   const handleSubmit = async () => {
     const abortController = new AbortController();
     try {
@@ -63,10 +67,18 @@ function SeatReservation() {
         {tableOptions}
       </select>
       <div>
-        <button type="button" className="btn btn-secondary mr-2" onClick={history.goBack}>
+        <button
+          type="button"
+          className="btn btn-secondary mr-2"
+          onClick={history.goBack}
+        >
           Cancel
         </button>
-        <button type="submit" className="btn btn-primary" onClick={handleSubmit}>
+        <button
+          type="submit"
+          className="btn btn-primary"
+          onClick={handleSubmit}
+        >
           Submit
         </button>
       </div>

@@ -21,9 +21,12 @@ function NewReservation() {
     people: "",
   };
 
-  const [reservationForm, setReservationForm] = useState({ ...initialFormData });
+  const [reservationForm, setReservationForm] = useState({
+    ...initialFormData,
+  });
   const [error, setError] = useState(null);
 
+  // Change handler function
   const handleChange = ({ target: { name, value } }) => {
     setReservationForm({
       ...reservationForm,
@@ -31,11 +34,14 @@ function NewReservation() {
     });
   };
 
+  // Submit handler function
   const handleSubmit = (event) => {
     event.preventDefault();
     createReservation(reservationForm)
       .then(() => {
-        history.push(`/dashboard?date=${formatAsDate(reservationForm.reservation_date)}`);
+        history.push(
+          `/dashboard?date=${formatAsDate(reservationForm.reservation_date)}`
+        );
       })
       .catch(setError);
   };

@@ -16,6 +16,7 @@ import ErrorAlert from "../layout/ErrorAlert";
  *  the date for which the user wants to view reservations.
  * @returns {JSX.Element}
  */
+
 function Dashboard({ date }) {
   const [reservations, setReservations] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
@@ -42,6 +43,7 @@ function Dashboard({ date }) {
     return () => abortController.abort();
   }
 
+  // Functionality for finishing reservations
   const handleFinishReservation = async (table_id) => {
     const abortController = new AbortController();
     const confirm = window.confirm(
@@ -59,6 +61,7 @@ function Dashboard({ date }) {
     return () => abortController.abort();
   };
 
+  // Functionality for Previous and Next day buttons
   function previousDay(date) {
     const previousDate = previous(date);
     history.push(`/dashboard?date=${previousDate}`);

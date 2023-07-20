@@ -13,6 +13,7 @@ function SearchReservation() {
   const [searchSubmitted, setSearchSubmitted] = useState(false);
   const [error, setError] = useState(null);
 
+  // Submit handler function
   const handleSubmit = async (event) => {
     event.preventDefault();
     setSearchSubmitted(true);
@@ -27,6 +28,7 @@ function SearchReservation() {
     return () => abortController.abort();
   };
 
+  // Change handler function
   const handleChange = ({ target }) => {
     setNumber(target.value);
   };
