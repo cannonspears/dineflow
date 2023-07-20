@@ -30,6 +30,7 @@ function NewTable() {
   // Submit handler function
   const handleSubmit = (event) => {
     event.preventDefault();
+    tableForm.capacity = Number(tableForm.capacity);
     createTable(tableForm)
       .then(() => {
         history.push(`/`);

@@ -34,6 +34,7 @@ function EditReservation() {
   // Submit handler function
   const handleSubmit = (event) => {
     event.preventDefault();
+    currentReservation.people = Number(currentReservation.people);
     editReservation(currentReservation)
       .then(() => {
         history.push(

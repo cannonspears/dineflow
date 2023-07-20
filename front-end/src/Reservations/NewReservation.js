@@ -37,6 +37,7 @@ function NewReservation() {
   // Submit handler function
   const handleSubmit = (event) => {
     event.preventDefault();
+    reservationForm.people = Number(reservationForm.people);
     createReservation(reservationForm)
       .then(() => {
         history.push(
