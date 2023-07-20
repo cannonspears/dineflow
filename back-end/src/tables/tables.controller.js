@@ -40,7 +40,7 @@ function validateCapacityProperty(req, res, next) {
       status: 400,
       message: `"capacity" must be a number.`,
     });
-  } else if (+capacity < 1) {
+  } else if (capacity < 1) {
     return next({
       status: 400,
       message: `"capacity" must be at least 1.`,
@@ -141,13 +141,15 @@ function validateFinishedOccupiedTable(req, res, next) {
 }
 
 async function list(req, res, next) {
-  const data = await service.list();
-  res.status(200).json({ data });
+  res.status(200).json({ data: await service.list() });
 }
 
 async function create(req, res, next) {
-  const data = await service.create(req.body.data);
-  res.status(201).json({ data });
+  res.status(201).json({ data: await service.create(req.body.data) });
+}
+
+async function read(req, res, next) {
+  res.status(200).json({ data: res.locals.table });
 }
 
 async function update(req, res) {
@@ -164,8 +166,7 @@ async function update(req, res) {
 
   await reservationsService.updateStatus(updatedReservation);
 
-  const data = await service.update(updatedTable);
-  res.status(200).json({ data });
+  res.status(200).json({ data: await service.update(updatedTable) });
 }
 async function destroy(req, res, next) {
   const updatedTable = {
@@ -181,9 +182,8 @@ async function destroy(req, res, next) {
     status: "finished",
   };
 
-  const data = await service.update(updatedTable);
   await reservationsService.updateStatus(updatedReservation);
-  res.json({ data });
+  res.json({ data: await service.update(updatedTable) });
 }
 
 module.exports = {
@@ -196,10 +196,11 @@ module.exports = {
     validateTableNameProperty,
     asyncErrorBoundary(create),
   ],
+  read: [asyncErrorBoundary(validateTableExists), asyncErrorBoundary(read)],
   update: [
     validateBodyHasData,
-    asyncErrorBoundary(validateTableExists),
     asyncErrorBoundary(validateReservationExists),
+    asyncErrorBoundary(validateTableExists),
     validateReservationIsSeated,
     validateSeatedCapacity,
     validateTableIsAvailable,

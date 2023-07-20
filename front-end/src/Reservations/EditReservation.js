@@ -5,11 +5,13 @@ import { editReservation, readReservation } from "../utils/api";
 import { formatAsDate } from "../utils/date-time";
 
 import ReservationForm from "./ReservationForm";
+import ErrorAlert from "../layout/ErrorAlert";
 
 function EditReservation() {
   const history = useHistory();
   const { reservation_id } = useParams();
   const [currentReservation, setCurrentReservation] = useState({});
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -24,16 +26,19 @@ function EditReservation() {
     });
   };
 
-  async function handleSubmit(reservation) {
-    await editReservation({
-      ...reservation,
-    });
-    history.push(`/dashboard?date=${formatAsDate(reservation.reservation_date)}`);
-  }
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    editReservation(currentReservation)
+      .then(() => {
+        history.push(`/dashboard?date=${formatAsDate(currentReservation.reservation_date)}`);
+      })
+      .catch(setError);
+  };
 
   return (
     <div>
       <h2>Edit Reservation</h2>
+      <ErrorAlert error={error} />
       <ReservationForm
         handleChange={handleChange}
         handleSubmit={handleSubmit}
