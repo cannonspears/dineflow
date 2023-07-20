@@ -1,7 +1,7 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 
-function TableForm({ handleChange, handleSubmit, formData, path }) {
+function TableForm({ handleChange, handleSubmit, formData }) {
   const history = useHistory();
 
   return (
@@ -35,7 +35,11 @@ function TableForm({ handleChange, handleSubmit, formData, path }) {
         </div>
       </div>
 
-      <button type="button" className="btn btn-secondary mr-2" onClick={() => history.goBack()}>
+      <button
+        type="button"
+        className="btn btn-secondary mr-2"
+        onClick={() => history.goBack()}
+      >
         Cancel
       </button>
       <button type="submit" className="btn btn-primary">

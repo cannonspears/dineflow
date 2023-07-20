@@ -5,14 +5,18 @@ function TableList({ tables, handleFinishReservation }) {
     <tr key={table.table_id}>
       <td>{table.table_name}</td>
       <td>{table.capacity}</td>
-      <td data-table-id-status={table.table_id}>{table.reservation_id ? "Occupied" : "Free"}</td>
+      <td data-table-id-status={table.table_id}>
+        {table.reservation_id ? "Occupied" : "Free"}
+      </td>
       {table.reservation_id !== null ? (
         <td>
           <button
             typ="button"
-            className="btn btn-outline-secondary btn-sm"
+            className="btn btn-secondary btn-sm"
             data-table-id-finish={table.table_id}
-            onClick={() => handleFinishReservation(table.table_id, table.reservation_id)}
+            onClick={() =>
+              handleFinishReservation(table.table_id, table.reservation_id)
+            }
           >
             Finish
           </button>
@@ -32,7 +36,6 @@ function TableList({ tables, handleFinishReservation }) {
               <th scope="col">Table Name</th>
               <th scope="col">Capacity</th>
               <th scope="col">Status</th>
-              <th scope="col">Options</th>
             </tr>
           </thead>
           <tbody className="table-group-divider">{tablesRows}</tbody>

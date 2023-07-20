@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
+
+// Import Utility Functions
 import { createTable } from "../utils/api";
+
+// Import Components
 import TableForm from "./TableForm.js";
 import ErrorAlert from "../layout/ErrorAlert";
 
@@ -12,19 +16,19 @@ function NewTable() {
     capacity: "",
   };
 
-  const [formData, setFormData] = useState({ ...initialFormData });
+  const [tableForm, setTableForm] = useState({ ...initialFormData });
   const [error, setError] = useState(null);
 
   const handleChange = ({ target: { name, value } }) => {
-    setFormData({
-      ...formData,
+    setTableForm({
+      ...tableForm,
       [name]: value,
     });
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    createTable(formData)
+    createTable(tableForm)
       .then(() => {
         history.push(`/`);
       })
@@ -43,7 +47,7 @@ function NewTable() {
         handleChange={handleChange}
         handleSubmit={handleSubmit}
         handleCancel={handleCancel}
-        formData={formData}
+        formData={tableForm}
         path={"/"}
       />
     </main>
