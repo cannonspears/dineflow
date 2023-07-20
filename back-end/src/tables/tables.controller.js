@@ -156,6 +156,14 @@ async function update(req, res) {
     table_id: res.locals.table.table_id,
   };
 
+  const updatedReservation = {
+    ...res.locals.reservation,
+    reservation_id: res.locals.reservation.reservation_id,
+    status: "seated",
+  };
+
+  await reservationsService.updateStatus(updatedReservation);
+
   const data = await service.update(updatedTable);
   res.status(200).json({ data });
 }
@@ -165,7 +173,16 @@ async function destroy(req, res, next) {
     reservation_id: null,
   };
 
+  const reservation_id = res.locals.table.reservation_id;
+  const reservation = await reservationsService.read(reservation_id);
+
+  const updatedReservation = {
+    ...reservation,
+    status: "finished",
+  };
+
   const data = await service.update(updatedTable);
+  await reservationsService.updateStatus(updatedReservation);
   res.json({ data });
 }
 
@@ -180,9 +197,9 @@ module.exports = {
     asyncErrorBoundary(create),
   ],
   update: [
-    asyncErrorBoundary(validateTableExists),
     validateBodyHasData,
-    validateReservationExists,
+    asyncErrorBoundary(validateTableExists),
+    asyncErrorBoundary(validateReservationExists),
     validateReservationIsSeated,
     validateSeatedCapacity,
     validateTableIsAvailable,

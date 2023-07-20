@@ -120,22 +120,6 @@ async function validateReservationExists(req, res, next) {
   });
 }
 
-function validateReservationIsBooked(req, res, next) {
-  const { status } = req.body.data;
-  if (status) {
-    if (status === "seated" || status === "finished") {
-      return next({
-        status: 400,
-        message: "Cannot create seated or finished reservation.",
-      });
-    }
-    if (status === "booked") {
-      return next();
-    }
-  }
-  return next();
-}
-
 function validateStatusProperty(req, res, next) {
   const { status } = req.body.data;
   const validStatus = ["booked", "seated", "finished", "cancelled"];
@@ -147,6 +131,22 @@ function validateStatusProperty(req, res, next) {
   }
   res.locals.status = status;
   next();
+}
+
+function validateReservationIsBooked(req, res, next) {
+  const { status } = req.body.data;
+  if (status) {
+    if (status == "seated" || status == "finished") {
+      return next({
+        status: 400,
+        message: "Cannot create seated or finished reservation.",
+      });
+    }
+    if (status == "booked") {
+      return next();
+    }
+  }
+  return next();
 }
 
 function validateReservationIsFinished(req, res, next) {
