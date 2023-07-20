@@ -51,19 +51,14 @@ function validateBodyHasData(req, res, next) {
 }
 
 function validatePeopleProperty(req, res, next) {
-  const { data: { people } = {} } = req.body;
-  if (!Number.isInteger(+people)) {
-    return next({
-      status: 400,
-      message: `"people" in party must be a number.`,
-    });
-  } else if (people < 1) {
-    return next({
-      status: 400,
-      message: `"people" in party must be at least 1.`,
-    });
-  } else {
+  const { people } = req.body.data;
+  if (Number.isInteger(people)) {
     next();
+  } else {
+    return next({
+      status: 400,
+      message: `"people" must be a number`,
+    });
   }
 }
 
@@ -130,7 +125,7 @@ function validateStatusProperty(req, res, next) {
   if (!validStatus.includes(status)) {
     return next({
       status: 400,
-      message: "Status must be valid.",
+      message: "Status cannot be unknown.",
     });
   }
 
@@ -139,7 +134,7 @@ function validateStatusProperty(req, res, next) {
 }
 
 function validateReservationIsBooked(req, res, next) {
-  const { status = {} } = req.body.data;
+  const { status } = req.body.data;
   if (status === "seated" || status === "finished") {
     return next({
       status: 400,
@@ -197,8 +192,8 @@ module.exports = {
   list: asyncErrorBoundary(list),
   create: [
     validateBodyHasData,
-    validateHasRequiredProperties,
     validateHasOnlyCorrectProperties,
+    validateHasRequiredProperties,
     validatePeopleProperty,
     validateDateProperty,
     validateDateIsNotInThePast,

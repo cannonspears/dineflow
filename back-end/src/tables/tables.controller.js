@@ -37,19 +37,14 @@ function validateBodyHasData(req, res, next) {
 }
 
 function validateCapacityProperty(req, res, next) {
-  const { data: { capacity } = {} } = req.body;
-  if (!+capacity) {
-    return next({
-      status: 400,
-      message: `"capacity" must be a number.`,
-    });
-  } else if (capacity < 1) {
-    return next({
-      status: 400,
-      message: `"capacity" must be at least 1.`,
-    });
-  } else {
+  const { capacity } = req.body.data;
+  if (Number.isInteger(capacity)) {
     next();
+  } else {
+    return next({
+      status: 400,
+      message: `"capacity" must be a number`,
+    });
   }
 }
 
@@ -101,7 +96,7 @@ function validateSeatedCapacity(req, res, next) {
   if (capacity < res.locals.reservation.people) {
     next({
       status: 400,
-      message: `${table_name} does not have enough space.`,
+      message: `${table_name} does not have enough capacity.`,
     });
   } else {
     next();
@@ -170,7 +165,7 @@ async function update(req, res) {
 
   await reservationsService.updateStatus(updatedReservation);
 
-  res.status(202).json({ data: await service.update(updatedTable) });
+  res.status(200).json({ data: await service.update(updatedTable) });
 }
 async function destroy(req, res, next) {
   const updatedTable = {
