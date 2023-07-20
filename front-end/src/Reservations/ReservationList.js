@@ -20,6 +20,14 @@ function ReservationList({ reservations, loadDashboard }) {
               Seat
             </a>
           </td>
+          <td>
+            <a
+              href={`/reservations/${reservation.reservation_id}/edit`}
+              className="btn btn-outline-secondary btn-sm"
+            >
+              Edit
+            </a>
+          </td>
         </Fragment>
       ) : null}
     </tr>

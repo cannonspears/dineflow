@@ -216,6 +216,7 @@ module.exports = {
     validatePeopleProperty,
     validateDateProperty,
     validateDateIsNotInThePast,
+    validateTimeProperty,
     validateReservationIsBooked,
     asyncErrorBoundary(update),
   ],

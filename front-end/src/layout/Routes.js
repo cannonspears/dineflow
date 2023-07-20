@@ -10,6 +10,7 @@ import Dashboard from "../dashboard/Dashboard";
 import SearchReservation from "../Reservations/SearchReservation";
 import NewReservation from "../Reservations/NewReservation";
 import SeatReservation from "../Reservations/SeatReservation";
+import EditReservation from "../Reservations/EditReservation";
 import NewTable from "../Tables/NewTable";
 import NotFound from "./NotFound";
 
@@ -37,6 +38,9 @@ function Routes() {
       </Route>
       <Route path="/reservations/new">
         <NewReservation />
+      </Route>
+      <Route path="/reservations/:reservation_id/edit">
+        <EditReservation />
       </Route>
       <Route path="/reservations/:reservation_id/seat">
         <SeatReservation />

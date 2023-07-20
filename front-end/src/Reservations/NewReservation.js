@@ -36,10 +36,6 @@ function NewReservation() {
       .catch(setError);
   };
 
-  const handleCancel = () => {
-    history.push("/");
-  };
-
   return (
     <main>
       <h1>New Reservation</h1>
@@ -47,9 +43,7 @@ function NewReservation() {
       <ReservationForm
         handleChange={handleChange}
         handleSubmit={handleSubmit}
-        handleCancel={handleCancel}
         formData={formData}
-        path={"/"}
       />
     </main>
   );
