@@ -26,7 +26,7 @@ function updateStatus(updatedReservation) {
     .then((updatedRecords) => updatedRecords[0]);
 }
 
-function search(mobile_number) {
+function searchByPhoneNumber(mobile_number) {
   return knex("reservations")
     .whereRaw(
       "translate(mobile_number, '() -', '') like ?",
@@ -40,5 +40,5 @@ module.exports = {
   create,
   read,
   updateStatus,
-  search,
+  searchByPhoneNumber,
 };

@@ -1,17 +1,21 @@
 import React, { useState } from "react";
 
+// Import Utility Functions
 import { searchByPhoneNumber } from "../utils/api";
 
+// Import Components
 import ReservationList from "./ReservationList";
 import ErrorAlert from "../layout/ErrorAlert";
 
 function SearchReservation() {
   const [number, setNumber] = useState("");
   const [reservations, setReservations] = useState([]);
+  const [searchSubmitted, setSearchSubmitted] = useState(false);
   const [error, setError] = useState(null);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setSearchSubmitted(true);
     const abortController = new AbortController();
     try {
       const searchResults = await searchByPhoneNumber(number);
@@ -30,7 +34,7 @@ function SearchReservation() {
   return (
     <main>
       <form onSubmit={handleSubmit}>
-        <h2>Search for Reservation</h2>
+        <h1>Search for Reservation</h1>
         <ErrorAlert error={error} />
         <div className="input-group mb-3 w-50">
           <input
@@ -38,14 +42,12 @@ function SearchReservation() {
             type="text"
             className="form-control"
             placeholder="Enter a customer's phone number"
-            aria-label="Enter a customer's phone number"
-            aria-describedby="basic-addon2"
             onChange={handleChange}
             value={reservations.mobile_number}
             required
           ></input>
           <div className="input-group-append">
-            <button className="btn btn-outline-secondary" type="submit">
+            <button className="btn btn-secondary" type="submit">
               Find
             </button>
           </div>
@@ -53,17 +55,19 @@ function SearchReservation() {
       </form>
       <div className="container-fluid col">
         <div className="row d-md-flex mb-3">
-          <h4>Search Result</h4>
+          <h4>Search Results</h4>
         </div>
-        {reservations.length > 0 ? (
-          <div className="row d-md-flex mb-3">
-            <ReservationList reservations={reservations} />
-          </div>
-        ) : (
-          <div className="row d-md-flex mb-3 alert alert-dark text-center w-50" role="alert">
-            No reservations found
-          </div>
-        )}
+        {searchSubmitted ? (
+          reservations.length > 0 ? (
+            <div className="row d-md-flex mb-3">
+              <ReservationList reservations={reservations} />
+            </div>
+          ) : (
+            <div className="row d-md-flex mb-3 text-center w-50">
+              No reservations found
+            </div>
+          )
+        ) : null}
       </div>
     </main>
   );

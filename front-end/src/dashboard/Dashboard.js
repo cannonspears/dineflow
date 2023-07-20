@@ -35,6 +35,7 @@ function Dashboard({ date }) {
   }
 
   useEffect(loadTables, []);
+
   function loadTables() {
     const abortController = new AbortController();
     listTable(abortController.signal).then(setTables);

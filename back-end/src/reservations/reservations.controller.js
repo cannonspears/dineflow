@@ -172,7 +172,7 @@ async function list(req, res) {
     data = await service.listByDate(date);
   }
   if (mobile_number) {
-    data = await service.search(mobile_number);
+    data = await service.searchByPhoneNumber(mobile_number);
   }
   res.json({ data });
 }
