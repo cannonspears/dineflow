@@ -32,7 +32,6 @@ function SeatReservation() {
     const abortController = new AbortController();
     try {
       await seatReservationAtTable(reservation_id, tableId);
-
       history.push(`/`);
     } catch (error) {
       setErrorMessage(error);

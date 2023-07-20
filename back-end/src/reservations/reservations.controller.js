@@ -49,7 +49,7 @@ function validateBodyHasData(req, res, next) {
 
 function validatePeopleProperty(req, res, next) {
   const { data: { people } = {} } = req.body;
-  if (!Number.isInteger(people)) {
+  if (!Number.isInteger(+people)) {
     return next({
       status: 400,
       message: `"people" in party must be a number.`,
