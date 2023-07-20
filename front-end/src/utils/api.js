@@ -120,12 +120,7 @@ export async function finishReservation(table_id, signal) {
   return await fetchJson(url, options);
 }
 
-// export async function changeReservationStatus(reservation, status) {
-//   const url = `${API_BASE_URL}/reservations/${reservation.reservation_id}/status`;
-//   const options = {
-//     method: "PUT",
-//     body: JSON.stringify({ data: { status } }),
-//     headers,
-//   };
-//   return await fetchJson(url, options, reservation);
-// }
+export async function searchByPhoneNumber(mobile_number, signal) {
+  const url = new URL(`${API_BASE_URL}/reservations?mobile_number=${mobile_number}`);
+  return await fetchJson(url, { signal }).then(formatReservationDate).then(formatReservationTime);
+}

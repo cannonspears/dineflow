@@ -3,7 +3,7 @@ import React, { Fragment } from "react";
 function ReservationList({ reservations, loadDashboard }) {
   const reservationsRows = reservations.map((reservation) => (
     <tr key={reservation.reservation_id}>
-      <td scope="row">{reservation.first_name}</td>
+      <td>{reservation.first_name}</td>
       <td>{reservation.last_name}</td>
       <td>{reservation.mobile_number}</td>
       <td>{reservation.reservation_date}</td>

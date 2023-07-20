@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { today } from "../utils/date-time";
 
 function ReservationForm({ handleChange, handleSubmit, formData, path }) {

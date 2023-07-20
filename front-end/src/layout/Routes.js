@@ -7,6 +7,7 @@ import useQuery from "../utils/useQuery";
 
 // Import Components
 import Dashboard from "../dashboard/Dashboard";
+import SearchReservation from "../Reservations/SearchReservation";
 import NewReservation from "../Reservations/NewReservation";
 import SeatReservation from "../Reservations/SeatReservation";
 import NewTable from "../Tables/NewTable";
@@ -42,6 +43,9 @@ function Routes() {
       </Route>
       <Route path="/tables/new">
         <NewTable />
+      </Route>
+      <Route path="/search">
+        <SearchReservation />
       </Route>
       <Route>
         <NotFound />
