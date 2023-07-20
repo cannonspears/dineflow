@@ -92,7 +92,6 @@ function ReservationForm({ handleChange, handleSubmit, formData }) {
             className="form-control"
             id="reservation_date"
             name="reservation_date"
-            min={today()}
             onChange={handleChange}
             value={formData.reservation_date}
             required
