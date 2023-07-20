@@ -1,8 +1,9 @@
 const service = require("./tables.service");
 const reservationsService = require("../reservations/reservations.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
-
 const hasProperties = require("../errors/hasProperties");
+
+// Application Middleware/Validators
 const validateHasRequiredProperties = hasProperties("table_name", "capacity");
 
 const VALID_PROPERTIES = ["table_name", "capacity"];
@@ -10,7 +11,9 @@ const VALID_PROPERTIES = ["table_name", "capacity"];
 function validateHasOnlyCorrectProperties(req, res, next) {
   const { data = {} } = req.body;
 
-  const invalidFields = Object.keys(data).filter((field) => !VALID_PROPERTIES.includes(field));
+  const invalidFields = Object.keys(data).filter(
+    (field) => !VALID_PROPERTIES.includes(field)
+  );
   if (invalidFields.length) {
     return next({
       status: 400,
@@ -79,7 +82,7 @@ async function validateReservationExists(req, res, next) {
   if (!reservation_id) {
     next({
       status: 400,
-      message: `reservation_id is missing.`,
+      message: `"reservation_id" cannot be undefined.`,
     });
   }
   const reservation = await reservationsService.read(reservation_id);
@@ -89,16 +92,16 @@ async function validateReservationExists(req, res, next) {
   }
   next({
     status: 404,
-    message: `reservation_id ${reservation_id} cannot be found.`,
+    message: `"reservation_id" ${reservation_id} cannot be found.`,
   });
 }
 
 function validateSeatedCapacity(req, res, next) {
-  const capacity = res.locals.table.capacity;
+  const { capacity, table_name } = res.locals.table;
   if (capacity < res.locals.reservation.people) {
     next({
       status: 400,
-      message: `That table does not have sufficient capacity.`,
+      message: `${table_name} does not have enough space.`,
     });
   } else {
     next();
@@ -111,7 +114,7 @@ function validateReservationIsSeated(req, res, next) {
   if (status === "seated") {
     return next({
       status: 400,
-      message: "This reservation is already seated",
+      message: "Reservation already seated.",
     });
   }
   next();
@@ -122,24 +125,25 @@ function validateTableIsAvailable(req, res, next) {
   if (reservation !== null) {
     next({
       status: 400,
-      message: `Table ${res.locals.table.table_name} is occupied.`,
+      message: `Table ${res.locals.table.table_name} is currently occupied.`,
     });
   }
   next();
 }
 
-function validateFinishedOccupiedTable(req, res, next) {
+function validateOccupiedTable(req, res, next) {
   const { table } = res.locals;
 
   if (!table.reservation_id) {
     return next({
       status: 400,
-      message: "Table is not occupied.",
+      message: `${table.table_name} is not occupied.`,
     });
   }
   next();
 }
 
+// RESTful API Functions
 async function list(req, res, next) {
   res.status(200).json({ data: await service.list() });
 }
@@ -166,7 +170,7 @@ async function update(req, res) {
 
   await reservationsService.updateStatus(updatedReservation);
 
-  res.status(200).json({ data: await service.update(updatedTable) });
+  res.status(202).json({ data: await service.update(updatedTable) });
 }
 async function destroy(req, res, next) {
   const updatedTable = {
@@ -208,7 +212,7 @@ module.exports = {
   ],
   delete: [
     asyncErrorBoundary(validateTableExists),
-    validateFinishedOccupiedTable,
+    validateOccupiedTable,
     asyncErrorBoundary(destroy),
   ],
 };
