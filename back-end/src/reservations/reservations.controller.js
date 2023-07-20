@@ -74,7 +74,7 @@ function validateDateProperty(req, res, next) {
   if (dayOfTheWeek.getUTCDay() == 2) {
     return next({
       status: 400,
-      message: `"reservation_date" must not be Tuesday.`,
+      message: `"reservation_date" must not be Tuesday. The restaurant is closed.`,
     });
   } else if (date && date > 0) {
     return next();
@@ -92,7 +92,7 @@ function validateDateIsNotInThePast(req, res, next) {
   if (day < new Date()) {
     return next({
       status: 400,
-      message: `"reservation_date" and "reservation_time" must not be in the past.`,
+      message: `Reservation must be in the future.`,
     });
   } else {
     next();
