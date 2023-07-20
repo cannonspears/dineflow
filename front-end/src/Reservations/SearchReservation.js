@@ -36,10 +36,9 @@ function SearchReservation() {
           <input
             name="mobile_number"
             type="text"
-            maxLength="10"
             className="form-control"
-            placeholder="Find a Reservation"
-            aria-label="Find a Reservation"
+            placeholder="Enter a customer's phone number"
+            aria-label="Enter a customer's phone number"
             aria-describedby="basic-addon2"
             onChange={handleChange}
             value={reservations.mobile_number}

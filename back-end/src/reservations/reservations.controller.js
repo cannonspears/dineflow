@@ -162,9 +162,13 @@ function validateReservationIsFinished(req, res, next) {
 
 async function list(req, res) {
   const { date } = req.query;
+  const { mobile_number } = req.query;
   let data;
   if (date) {
     data = await service.listByDate(date);
+  }
+  if (mobile_number) {
+    data = await service.search(mobile_number);
   }
   res.json({ data });
 }
@@ -203,6 +207,16 @@ module.exports = {
     asyncErrorBoundary(validateReservationExists),
     validateStatusProperty,
     validateReservationIsFinished,
+    asyncErrorBoundary(update),
+  ],
+  updateReservation: [
+    asyncErrorBoundary(validateReservationExists),
+    validateBodyHasData,
+    validateHasRequiredProperties,
+    validatePeopleProperty,
+    validateDateProperty,
+    validateDateIsNotInThePast,
+    validateReservationIsBooked,
     asyncErrorBoundary(update),
   ],
 };
