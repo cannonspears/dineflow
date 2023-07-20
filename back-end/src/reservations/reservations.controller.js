@@ -153,7 +153,7 @@ function validateReservationIsBooked(req, res, next) {
 }
 
 function validateReservationIsFinished(req, res, next) {
-  const { reservation = {} } = res.locals;
+  const { reservation } = res.locals;
   if (reservation.status === "finished") {
     return next({
       status: 400,
@@ -165,8 +165,8 @@ function validateReservationIsFinished(req, res, next) {
 
 // RESTful API Functions
 async function list(req, res) {
-  const { date = {} } = req.query;
-  const { mobile_number = {} } = req.query;
+  const { date } = req.query;
+  const { mobile_number } = req.query;
   let data;
   if (date) {
     data = await service.listByDate(date);
