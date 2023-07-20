@@ -1,5 +1,7 @@
 import React, { Fragment } from "react";
 
+import CancelReservation from "./CancelReservation";
+
 function ReservationList({ reservations, loadDashboard }) {
   const reservationsRows = reservations.map((reservation) => (
     <tr key={reservation.reservation_id}>
@@ -27,6 +29,12 @@ function ReservationList({ reservations, loadDashboard }) {
             >
               Edit
             </a>
+          </td>
+          <td>
+            <CancelReservation
+              reservation_id={reservation.reservation_id}
+              loadDashboard={loadDashboard}
+            />
           </td>
         </Fragment>
       ) : null}

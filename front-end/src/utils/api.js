@@ -137,3 +137,18 @@ export async function searchByPhoneNumber(mobile_number, signal) {
   const url = new URL(`${API_BASE_URL}/reservations?mobile_number=${mobile_number}`);
   return await fetchJson(url, { signal }).then(formatReservationDate).then(formatReservationTime);
 }
+
+export async function cancelReservation(reservation, signal) {
+  const url = new URL(`${API_BASE_URL}/reservations/${reservation}/status`);
+  const options = {
+    method: "PUT",
+    headers,
+    body: JSON.stringify({
+      data: {
+        status: "cancelled",
+      },
+    }),
+    signal,
+  };
+  return await fetchJson(url, options);
+}
